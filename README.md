@@ -1,6 +1,6 @@
 # CS50's Web Programming with Python and Javascript
 
-This repository contains 6 branches (excluding this _master_ branch), each of which represents a problem set of the course, [_CS50's Web Programming with Python and Javascript_](https://www.edx.org/course/cs50s-web-programming-with-python-and-javascript).
+This repository contains 6 directories, each of which represents a problem set of the course, [_CS50's Web Programming with Python and Javascript_](https://www.edx.org/course/cs50s-web-programming-with-python-and-javascript).
 
 - Week 0 (HTML, CSS) - Search
 - Week 1 (Git)
