@@ -1,0 +1,44 @@
+{% extends 'springrevolution/layout.html' %}
+{% load static %}
+{% block body %}
+<br><br><br class="avoid_navbar"><br class="avoid_navbar">
+<div class="container">
+    <div class="row">
+        <div class="report-description col-md-5 col-12">
+            <div class="text-center">
+                <div class="card-title">
+                    <h1>Report or Suggest Us</h1>
+                </div>
+                <div class="card-body">
+                    We do look forwards to receiving any suggestion about this website, especially about <strong>security vulnerabilities, donation categories system, </strong>and the <strong>new feature</strong> users would like to see. Should there
+                    be any <strong>inconvenience</strong> or something <strong>inappropriate</strong> or something needing <strong>clarification</strong>, please kindly inform us. 
+                </div>    
+            </div>
+        </div>
+        <div class="report-form col-md-7 col-12">    
+            <form action="{% url 'report' %}" method="post">
+                {% csrf_token %}
+                    <div class="container-lg"></div>
+                        <div class="mb-3">
+                            <label for="nickname">Nickname*</label>
+                            <input type="text" class="form-control" name="nickname" autocomplete="off" autofocus required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email">Email address*</label>
+                            <input type="email" class="form-control" name="email" required>
+                            <div class="form-text">Your email will never be shared with anyone else.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message">Message*</label>
+                            <textarea name="message" class="form-control" rows="5" required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Send</button>
+                        </div>
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
+<br>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends 'springrevolution/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Spring Revolutionaries Hub | Login
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  {% if success1 %}
+  <div class="alert alert-success text-center" role="alert">
+    {{ success1 }}
+  </div>
+  {% elif success2 %}
+  <div class="alert alert-success text-center" role="alert">
+    {{ success2 }}
+  </div>
+  {% elif error %}
+  <div class="alert alert-danger text-center" role="alert">
+    {{ error }}
+  </div>
+  {% endif %}
+  <a href="{% url 'index' %}"><img width="40" src="{% static 'springrevolution/images/back.png' %}" alt="back"></a>
+    <div class="login_card card">
+        <div class="card-header text-center">
+            <img width="40" src="{% static 'springrevolution/images/three-fingers.png' %}" alt="three fingers salute">
+        </div>
+        <div class="card-body">
+            <h4 class="card-title text-center">Login Form</h4>
+            <form action="{% url 'login_view' %}" method="post">
+              {% csrf_token %}
+              <div class="container-lg">
+                  <div class="form-floating mb-3">
+                      <input type="text" class="form-control" name="username" autocomplete="off" required>
+                      <label for="username">Username</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                      <input type="password" class="form-control" name="password" required>
+                      <label for="password">Password</label>
+                  </div><br>
+                  <div class="text-center">
+                      <button type="submit" class="btn btn-primary">Log In</button><br><br>
+                      <p class="card-text">Don't have an account?<a href="{% url 'register' %}"> Register</a></p>
+                      <a class="card-text" data-bs-toggle="modal" href="#forgot_password" >Forgot Password?</a>
+                  </div>
+              </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="forgot_password" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Resetting Passwords</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="{% url 'login_view' %}" method="post">
+          {% csrf_token %}
+          <div class="modal-body">
+              <p class="card-text">
+                  Since we cannot know your original passwords, resetting passwords is the only method to log in to your account.
+                  In order to do so, enter the email address with which you have registered for this website. A link to reset your
+                  passwords should be sent to that email address in few minutes.
+              </p>
+              <label for="reset_email" class="col-form-label">Email Address</label>
+              <input type="email" class="form-control" name="reset_email">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Continue</button>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+{% endblock %}

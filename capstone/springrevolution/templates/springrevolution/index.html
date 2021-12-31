@@ -1,0 +1,187 @@
+{% extends "springrevolution/layout.html" %}
+{% load static %}
+
+<!-- D:\KYT\CS50_Final\final_project\springrevolution\static\springrevolution -->
+{% block title %}
+    Spring Revolutionaries Hub
+{% endblock %}
+
+{% block body %}
+
+<!-- nav bar -->
+<nav class="navbar fixed-top navbar-expand-lg">
+  <div class="container-lg">
+    <img id="three-fingers" width="40" src="{% static 'springrevolution/images/hand.png' %}" alt="three fingers salute">
+    <a style="color: white;  font-family:Trirong;" class="navbar-brand" href="#"><h3>&nbsp; Spring Revolutonaries Hub</h3></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+      <img width="30" src="{% static 'springrevolution/images/menu.png' %}" alt="menu">
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="tabs nav-link" role="button" data-page="home" data-active="True">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="tabs nav-link" role="button" data-page="donations">Donations</a>
+        </li>
+        <li class="nav-item">
+          <a class="tabs nav-link" role="button" data-page="stay_connected">Stay Connected</a>
+        </li>
+        <li class="nav-item">
+          <a class="tabs nav-link" role="button" data-page="contact_us">Contact Us</a>
+        </li>
+      </ul>
+      <div class="d-flex">
+        
+        <div class="dropdown">
+          <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            {% if user.is_authenticated %}
+            <img width="30" src="{% static 'springrevolution/images/user_account.png' %}" alt="user account">
+            &nbsp; {{ request.user.username }}
+            {% else %}
+            Not Signed In
+            {% endif %}
+          </button>
+          <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton">
+            {% if user.is_authenticated %}
+              {% if request.user.is_superuser == True %}
+              <li><a class="dropdown-item" href="{% url 'start_mail' %}">Start Mail</a></li>              
+              {% endif %}
+              <li><a class="dropdown-item" href="{% url 'logout_view' %}">Logout</a></li>
+              {% else %}
+            <li><a class="dropdown-item" href="{% url 'login_view' %}">Login</a></li>
+            <li><a class="dropdown-item" href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav><br><br>
+
+<!-- other pages -->
+<div class="other-pages">
+</div>
+
+<!-- home page -->
+<div class="home-page">
+  <!-- home page main images -->
+  <div class="title-image">
+    <div class="title-text">
+      <h1 style="font-family: Trirong;">Myanmar Spring Revolution</h1>
+    </div>
+  </div><br>
+
+  <!-- about coup -->
+  <div id="about_coup" class="container">
+    <div class="card text-center">
+      <div class="card-header">
+        <img width="40" src="{% static 'springrevolution/images/three-fingers.png' %}" alt="three fingers salute">
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">About the Coup</h5>
+        <p class="card-text">
+          February 1st is the day when the people of Myanmar began to confront the most radical political shake-up in history
+          as the unlawful coup by the Myanmar military took place with the absurd and unjustifieable reason of electoral fraud in <a href="https://en.wikipedia.org/wiki/2020_Myanmar_general_election">2020 election</a>. 
+          Having seriously adverse experiences with the military regime, such as tyranny and corruption, for past 50 years, millions from all strata of Myanmar society across all different ethnic
+          groups have joined the Civil Disobedience Movement and nationwide protests to firmly resist the coup and to demand for a just, inclusive
+          federal democratic union. In response, the junta has been cruely oppressing revolutionaries with their brute forces, heavy weaponary,
+          and airstrikes, which results in the death toll of 611 and over 2,500 detainees, including Daw Aung San Su Kyi and other memebers of the legitimately elected government, as of April 5. Notwithstanding the promise of the junta that an election
+          will be conducted again within two years, the citizens have no faith into it, which is merely a part of their hoaxes to justify their coup, whatsoever, 
+          and know that in any case can the election in question be a fair, and democratic one if any. In fact, the outcome of this spring revolution of Myanmar will
+          determine the destiny of Myanmar, which is also the reason why the people of Myanmar keep courageously resisting despite the abominable cruelty of the junta.
+        </p>
+        <a href="https://en.wikipedia.org/wiki/2021_Myanmar_coup_d%27%C3%A9tat" class="btn btn-primary">More About the Coup</a>
+      </div>
+    </div>
+  </div><br>
+
+    <!-- about website -->
+  <div id="about_website" class="container text-center">
+      <h4 class="card-title">About the Website</h4>
+      <p class="card-text">
+        The sole and sincere purpose of this website is to contribute in the revolution with the expectation of impacting the society to some extent.
+        In order to implement so, it currently contains two features, <strong>Donations Hub</strong> and <strong>Stay Connected</strong>, both of whose
+        functionalities rely on the <strong><a data-bs-toggle="offcanvas" href="#FAQ" aria-controls="offcanvasExample">contribution of users</a></strong>.
+      </p>
+    <br>
+    <div class="row">
+      <div class="col-md-6">
+       <div class="text-center">
+          <h4 class="card-title">Donations Hub</h4><br>
+          <img id="donation_img" width="160" class="img-fluid" src="{% static 'springrevolution/images/online-donation.png' %}" alt="Donations"><br><br>
+          <p card="card-text">
+            Resisting the dictatorship and supporting the victims of junta's oppressions require continuous financial support.
+            This website, with <strong>categories</strong>, consolidates scatterd online sources of locations across Myanmar that are in need of our financial helps, which will
+            (hopefully!) facilitate searching for appropriate locations to donate and encourage in contribution.
+          </p>
+          <button data-page="donations" class="tabs btn btn-primary">Donations Hub</button>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="text-center">
+          <h5 class="card-title">Stay Connected</h5><br>
+          <img id="hands_img" width="160" class="img-fluid" src="{% static 'springrevolution/images/helping-hand.png' %}" alt="Helping Hands"><br><br>
+          <p card="card-text">
+            How long the revolution will last is opaque to everyone, and it's such an agony for the people of Myanmar to
+            witness or be subjected to junta's brutalities every single day. Therefore, this feature of sending <strong>motivational
+            and heartwarming emails</strong> to one another will (hopefully!) offer people mental strength, encourage them not to give up,
+            and keep them feel connected.
+          </p>
+          <button data-page="stay_connected" class="tabs btn btn-primary">Stay Connected</button>
+        </div>
+      </div>
+    </div>
+  </div><br>
+
+  <!-- links to other websites -->
+  <div class="other_helps text-center">
+    <h4 class="card-title">For Other Helps</h4>
+    <p>The following sites are the ones we recommand for reaching out for certain helps.</p>
+    <p>For directly supporting fundraisers - <strong><a href="https://www.isupportmyanmar.com/">I Support Myanmar</a></strong><br>
+      For helps regarding laws - <strong><a href="https://www.facebook.com/MyanmarsEcho/">Echo of Myanmar</a></strong></p>
+  </div><br>
+
+  <!-- Pre-footer image -->
+  <div class="prefooter-image">
+    <div class="prefooter-text">
+      <blockquote class="blockquote">
+        <h3 style="font-family: Trirong;">"What we are doing is defying against the dictatorship of the whole world."</h3>
+        <i>~ KYT</i>
+      </blockquote>
+    </div>
+  </div>
+</div><div class="container-fluid"> <!-- footer (don't use newline to remove gap between two divs)-->
+  <div class="footer-row row">
+      <div class="footer-col col-md-4 col-sm-6 col-12">
+        <div class="text-center">
+          <h4 style="color:white; font-family: Trirong;">About The Website</h4>
+          <a data-bs-toggle="modal" href="#about_donation_links">About Donation Links</a><br>
+          <a data-bs-toggle="modal" href="#about_messaging_services">About Messaging Services</a><br>
+          <a data-bs-toggle="modal" href="#securtiy_conditions">Security Conditions</a><br>
+          <a data-bs-toggle="offcanvas" href="#FAQ" aria-controls="offcanvasExample">FAQ</a>
+        </div>
+      </div>
+      <div class="footer-col col-md-4 col-sm-6 col-12">
+        <div class="text-center">
+          <img width="40" src="{% static 'springrevolution/images/hand.png' %}" alt="three fingers salute"><br><br>
+          <h4 style="color:white; font-family: Trirong;">Spring Revolutionaries Hub</h4>
+        </div>
+      </div>
+      <div class="footer-col col-md-4 col-sm-6 col-12">
+        <div class="text-center">
+          <h4 style="color:white; font-family: Trirong;">Contact</h4>
+          <a class="tabs" role="button" data-page="contact_us">Mail</a><br>
+          <h4 style="color:white; font-family: Trirong;">Attribution & Credits</h4>
+          <a data-bs-toggle="modal" href="#acknowledgement">Acknowledgement</a>
+        </div>
+      </div>
+  </div>
+  <div class="copyright row">
+    <div class="col-12">
+      Copyright 2021&#169; All Rights Reserved by KYT
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,136 @@
+/* general */
+body{
+    font-family: "PT Sans";
+}
+
+.btn{
+    border-radius:30px;
+}
+
+.modal-dialog {
+    max-width: 580px;
+}
+
+.offcanvas-start{
+    width:280px;
+}
+
+textarea{
+    overflow: hidden; /* to hide scroll bar */
+}
+
+.black_link{
+    text-decoration: none;
+    color: black;
+}
+
+/* layout */
+.body-row{
+    height: 100vh;
+}
+
+.fixed-top{
+    display: none;
+    background-color: white;
+    border-bottom: 3px solid #eaeaea;
+}
+
+.bottom-navbar{
+    display: none;
+    background-color: white;
+    border-top: 3px solid #eaeaea;
+}
+
+.bottom-alert{
+    background-color:#7fc8f5;
+}
+
+.side-navbar{
+    display: block;
+    border-right: 3px solid #eaeaea;
+    background-color: white;
+    padding-top: 1%;
+    height: 100%;
+    width: 20%;
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    overflow-x: hidden; /* Disable horizontal scroll */
+}
+
+.body{
+    padding-left: 21%;
+}
+
+.status-card{
+    padding:1%;
+    box-shadow: 0 3px 5px grey;
+}
+
+@media (max-width:576px) {
+    .side-navbar, .status-card{
+        display: none;
+    }
+
+    .fixed-top, .bottom-navbar{
+        display: block;
+    }
+
+    .body{
+        padding-top: 13%;
+        padding-left:0;
+    }
+}
+
+/* side-navbar */
+.side-navbar > div > a:hover, .side-navbar > div > img:hover{
+    background-color: rgb(227, 255, 255);
+    color: black;
+    padding: 15px;
+    border-radius: 30px;
+    transition: background-color 1s, padding 1s;
+}
+
+@media (max-width:848px){
+    .side-navbar > div > a > span{
+        display: none;
+    }
+}
+
+/* Create Post */
+#new_post_textarea{
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: groove;
+}
+
+#new_post_textarea:focus{
+    box-shadow: inset 0 -1px 0 #ddd;
+    outline:none;
+}
+
+/* posts */
+img:hover{
+    opacity: 0.7;
+}
+
+.dropstart{
+    padding: 5px;    
+}
+.dropstart:hover{
+    background-color: #eaf9f4;
+    border-radius: 28px;
+}
+
+/* follow modal */
+.modal_btn{
+    width: 65%;
+    padding: 12px 0 12px 0;
+}
+
+.btn-outline-primary:hover{
+    background-color: #aceaff;
+    color: #0d6efd;
+    transition: background-color 0.5s;
+}
+
+

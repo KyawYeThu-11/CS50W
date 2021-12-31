@@ -1,0 +1,54 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<h2>Watched Listings</h2>
+    <div class="container">
+        <div class="row gx-lg-1 gy-lg-3 gx-md-5 gy-md-3">
+            {% for listing in watched_listings %}
+                <div class="col-sm-12 col-md-6 col-lg-4">
+                    <button style="margin:auto;display: block;" type="button" class="btn btn-sm btn-primary" disabled>{{ listing.item.category }}</button>           
+                    <div class="card">
+                            <a href="{% url 'listing' listing.item.id %}">
+                                <img src="{{ listing.item.img_url }}" class="card-img-top" alt="...">
+                            </a> 
+                            <div class="card-body">
+                                <a style="text-decoration: none;" href="{% url 'listing' listing.item.id %}">
+                                    <h4 style="text-align: center;color:#4AD7D1" class="card-text">
+                                        {{ listing.item.title }}
+                                    </h4>
+                                </a><br>
+                                <p style="float:left;color:#818181" class="card-text"><small class="text-muted">Listed by~{{ listing.item.username }}</small></p>
+                                {% if listing.item.status == "active"%}
+                                    <button style="float:right" type="button" class="btn btn-sm btn-success" disabled>Active</button>
+                                {% else %}
+                                    <button style="float:right" type="button" class="btn btn-sm btn-warning" disabled>Closed</button>
+                                {% endif %}
+                                        
+                                <p style="clear:both;color:white;" class="card-text">
+                                    Starting Bid: ${{ listing.item.starting_bid }}<br>
+                                    Highest Bid: ${{ listing.item.starting_bid }}
+                                </p>
+                                <div class="description">
+                                    <p class="card-text"><i>{{ listing.item.description }}</i></p>
+                                </div><br>
+
+                                <!-- Watchlist button -->
+                                <form action="{% url 'watchlist_manipulation' listing.item.id %}" method="post">
+                                    {% csrf_token %}
+                                    <input style="display:none;" type="text" value="remove" name="condition">
+                                    <input style="display:none;" type="text" value="watchlist" name="origin">
+                                    <input type="submit" class="btn btn-danger" value="Remove from Watchlist">
+                                </form>
+                            </div>
+                    </div>                    
+                </div>
+                {% empty %}
+                    <hr>    
+                    <p>There is no listing added to your watchlist yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+
+{% endblock %}

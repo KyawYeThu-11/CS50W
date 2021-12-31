@@ -1,0 +1,78 @@
+img{
+    width:20%;
+    margin:auto auto 1% auto;
+    display: block;
+}
+
+.nav-link{
+    color:black;
+}
+
+.form-control{
+    margin:auto;
+    display:block;
+}
+
+#form1{
+    text-align:center;
+}
+
+#form1 input[type="text"]{
+    width:50%;
+    height: 42px;
+    border-radius: 35px;
+    border: 1px solid rgb(218, 218, 218);
+}
+
+#form1 input[type="text"]:hover{
+    box-shadow: 0px 0px 6px #c1c0c0;
+}
+
+input[name="source"]{
+    display:none;
+}
+
+input[type="submit"], button{
+    border: 1px solid #f9f9f9 ;
+    background-color:#f9f9f9;
+    margin: 9px;
+    padding: 11px;
+}
+
+input[type="submit"]:hover, button:hover{
+    border: 1px solid rgb(218, 218, 218);
+}
+
+
+
+/*for advanced.hmtl*/
+header{
+    background-color: #f3f3f3;
+    height: 4rem;
+}
+
+header img{
+    width:9%;
+    float:left;
+    padding: 1% 0 0 1%;
+    margin: 0 0 0 0;
+}
+
+#advanced_search_title{
+    color:#d00000;
+    font-size: 20px;
+    padding-top:15px;
+}
+
+#form2 input[type="text"]{
+    border: 1px solid rgb(218, 218, 218);
+}
+
+#form2 input[type="text"]:hover{
+    box-shadow: 0px 0px 6px #c1c0c0;
+}
+
+button a{
+    text-decoration:none;
+    color:black;
+}

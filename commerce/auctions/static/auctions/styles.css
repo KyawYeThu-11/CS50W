@@ -1,0 +1,71 @@
+body {
+    padding: 0px;
+}
+
+#title{
+    color:white;
+    font-family: 'Audiowide', sans-serif;
+}
+
+.card{
+    width: 19rem;
+    margin:auto;
+    border-radius: 50px;
+    background-color:#001730;
+}
+h2{
+    text-align:center;
+    font-family: 'Audiowide', sans-serif;
+}
+
+#create_form{
+    margin:auto;
+    display:block;
+    width:80%;
+}
+
+#create_button{
+    margin:auto;
+    display:block;
+    padding: 1% 3% 1% 3%;
+}
+
+.card-img-top{
+    display: block;
+    margin: 12px auto;
+    height: 15rem;
+    width: 95%;
+    border-radius: 50px;
+}
+
+#listing_card{
+    background-color:#b9fff1;
+    width:90%;
+    margin:auto;
+    display:block;
+}
+
+#listing_img{
+    margin: 5% auto;
+    width: 70%;
+    display: block;
+    border-radius: 30px;
+}
+
+.comments{
+    padding:1% 5%;
+    background-color: rgb(241 241 241);
+}
+
+#comment_button{
+    margin-top:0.5%;
+    float:right;
+}
+
+.dropdown{
+    margin-left:6%;
+}
+
+.nav-link{
+    color:white;
+}

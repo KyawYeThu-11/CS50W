@@ -1,0 +1,199 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+  {% if success is True %}
+    <div class="alert alert-success" role="alert">
+      Bid has been successfully made!
+    </div>
+  {% endif %}
+      
+      <div class="card mb-3" id="listing_card">
+        <div class="row g-0">
+          <h2 id="listing_title" class="card-title">{{ item.title }}</h2>
+          <!-- left column-->
+          <div class="col-md-12 col-lg-5">
+            <img id="listing_img" src="{{ item.img_url }}" class="card-img" alt="...">
+            <div id="listing_left" class="card-body">
+              <p class="card-text">
+                <strong>Category:</strong> {{ item.category }}
+                <br>
+                <strong>Description:</strong>
+                <br>
+                {{ item.description }}
+              </p>
+            </div>
+          </div>
+          
+          <!-- right column -->
+          <div class="col-md-12 col-lg-7">
+            <div class="card-body">
+              <!-- Watchlist -->
+              {% if user.is_authenticated %}
+                {% if request.user.username != item.username %}
+                  <div style="float:right" >
+                    <form action="{% url 'watchlist_manipulation' listing_id %}" method="post">
+                      {% csrf_token %}
+                      <input style="display:none;" type="text" value="{{ condition }}" name="condition">
+                      <input style="display:none;" type="text" value="listing" name="origin">
+                      {% if condition == "add" %}
+                        <input type="submit" class="btn btn-success" value="Add to Watchlist">
+                      {% else %}
+                        <input type="submit" class="btn btn-danger" value="Remove from Watchlist">
+                      {% endif %}
+                    </form>
+                  </div>
+                {% endif %}
+              {% endif %}
+
+              <!-- listed by -->
+              <p style="float:left;color:#e8e8e8;" class="card-text">
+                <small>
+                  {% if request.user.username != item.username %}
+                    Listed by ~ {{ item.username }}
+                  {% else %}
+                    Listed by <i>You</i>
+                  {% endif %}
+                </small>
+              </p>
+
+              <!-- Bid Stuff -->
+              <p style="clear:both;" class="card-text">
+                Starting Bid: ${{ item.starting_bid }}<br>
+                Highest Bid: ${{ bid.bid }}<br> 
+                Numbers of Bids Made: {{ bid.bid_id }}<br> 
+                Current Highest Bidder:
+                  {% if request.user.username == bid.username %}  
+                    <i>You</i><br>
+                  {% elif bid.username == item.username %}
+                    None<br>
+                  {% else %}
+                    {{ bid.username }}<br> 
+                  {% endif %}
+                <br>
+              </p>
+              <br>
+
+              <!-- Bid Form -->
+              <!-- If you are not the owner of item -->
+              {% if request.user.username != item.username %}
+                <!-- If item is active -->
+                {% if status_message == "active" %}
+                  <!-- If item is active and you are NOT the hightest bidder -->
+                  {% if request.user.username != bid.username %}
+                    {% if user.is_authenticated %}
+                      <h5 class="card-text"> You may start bidding on this item!</h5>
+                    {% else %}
+                      <h5 class="card-text"> Login is required to bid! </h5>
+                    {% endif %}
+                    <form id="bid_form" action="{% url 'bid' listing_id %}" method="post">
+                      {% csrf_token %}
+                      <div class="row mb-3">
+                        <label for="bid" class="col-sm-2 col-form-label"><strong>Amount:</strong></label>
+                        <div class="col-sm-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">$</span>
+                                {% if user.is_authenticated %}
+                                  <input type="number" class="form-control" name="bid" required>
+                                  <button type="submit" class="btn btn-primary">Place Bid</button>
+                                  {% if error != None %}
+                                    <div class="form-text" style="color:red"><strong>{{ error }}</strong></div> 
+                                  {% else %}
+                                    <div class="form-text">Your bid must be higher than the current bid.</div> 
+                                  {% endif %}
+                                {% else %}
+                                  <input type="number" class="form-control" value="30" disabled>
+                                  <button type="submit" class="btn btn-secondary" disabled>Place Bid</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                      </div>
+                    </form>
+                  <!-- If item is active and you are the hightest bidder -->
+                  {% else %}
+                    <h5>You are the current highest bidder!</h5>
+                  {% endif %}
+                <!-- If item is closed -->
+                {% else %}
+                  <!-- If item is closed and you are NOT the highest bidder --> 
+                  {% if request.user.username != bid.username %}
+                    <h5 class="card-text">This item has been sold to {{ bid.username }}!</h5>
+                  
+                    <!-- If item is closed and you are the highest bidder -->
+                  {% else %}
+                    <h5 class="card-text">You have won the auction!</h5>
+                  {% endif %}
+                {% endif %} 
+              <!-- if you are the owner of the listing -->  
+              {% else %}
+                <!-- if item is active -->
+                {% if status_message == "active" %}
+                  <!-- if item is active and nobody has bidded yet  -->
+                  {% if bid.username == item.username %}
+                    <h5 class="card-text">There is no bid yet!</h5><br>
+                  <!-- if item is active and someone has bidded -->
+                  {% else %}
+                    <h5 class="card-text">{{ bid.username }} is the current highest bidder.</h5><br>
+                  {% endif %}  
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                      Close Listing
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" style="color:black;" id="exampleModalLabel">Confirmation</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body" style="color:black;">
+                            Your item will be sold to <strong>{{ bid.username }}</strong> with the price of <strong>${{ bid.bid }}</strong>. Do you want to continue?
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-primary"><a style="text-decoration:none; color:white;" href="{% url 'close' listing_id %}">Continue</a></button>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                <!-- If item is close -->
+                {% else %}
+                    <h5 class="card-text">Your item has been sold to {{ bid.username }}!</h5>
+                {% endif %}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="comments">
+        {% if comments|length == 0 %}
+          <h4>0 Comment</h4>
+        {% elif comments|length > 0 %}
+          <h4>{{ comments|length }} Comments</h4>
+        {% endif %}
+            {% if user.is_authenticated %}
+              <small class="text-muted">Your Comment</small>
+              <form action="{% url 'add_comment' listing_id %}" method="post">
+                {% csrf_token %}
+                <textarea class="form-control" placeholder="Leave a comment here" name="comment" required></textarea>
+                <button id="comment_button" type="submit" class="btn btn-primary">Comment</button><br><br>
+              </form>
+            {% endif %}
+            {% for comment in comments %}
+              <img width="40" src=" static/auctions/user.png" alt="user logo">
+              <strong>
+                {% if comment.username == request.user.username %}
+                  <i>You</i>
+                {% else %}
+                  {{ comment.username }}
+                {% endif %}
+                {% if item.username == comment.username %}
+                  <i>(List Owner)</i>
+                {% endif %}
+              </strong>
+              <p style="margin-left: 4%;">{{ comment.comment }}</p>
+              {% empty %}
+              <p>No Comment Yet</p>
+            {% endfor %}
+      </div>
+{% endblock%}

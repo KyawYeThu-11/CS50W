@@ -1,0 +1,70 @@
+{% extends 'springrevolution/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Spring Revolutionaries Hub | Register
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <a href="{% url 'index' %}"><img width="40" src="{% static 'springrevolution/images/back.png' %}" alt="back"></a>
+    <div class="registration_card card">
+        <div class="card-header text-center">
+            <img width="40" src="{% static 'springrevolution/images/three-fingers.png' %}" alt="three fingers salute">
+        </div>
+        <div class="card-body">
+            <h4 class="card-title text-center">Registration Form</h4>
+            <form action="{% url 'register' %}" method="post">
+            {% csrf_token %}
+                <div class="container-lg">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="nickname" autocomplete="off" autofocus required>
+                        <label for="nickname">Nickname</label>
+                        {% if error1 %}
+                        <div class="form-text" style="color: red;">{{ error1 }}</div>
+                        {% else %}
+                        <div class="form-text">It is highly encouraged not to use your real name.</div>
+                        {% endif %}
+
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" name="email" required>
+                        <label for="email">Email address</label>
+                        {% if error2 %}
+                        <div class="form-text" style="color: red;">{{ error2 }}</div>
+                        {% else %}
+                        <div class="form-text">Your email will never be shared with anyone else.</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" name="password" required>
+                        <label for="password">Password</label>
+                        {% if error3 %}
+                        <div class="form-text" style="color: red;">{{ error3 }}</div>
+                        {% else %}
+                        <div class="form-text">At least 8 characters and both uppercase & lowercase letters are required.</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" name="confirm_password" required>
+                        <label for="confirm_password">Confirm Password</label>
+                        {% if error4 %}
+                        <div class="form-text" style="color: red;">{{ error4 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="checkbox" required>
+                        <label class="form-check-label" for="checkbox">
+                          I accept <a data-bs-toggle="modal" href="#securtiy_conditions">Security & Privacy Conditions</a> of this website.
+                        </label>
+                    </div><br>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Register</button><br><br>
+                        <p class="card-text">Already have an account? <a href="{% url 'login_view' %}">Log In</a></p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

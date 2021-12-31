@@ -1,0 +1,82 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    {% if title %}
+        <h2>{{ title }}</h2>
+    {% else %}
+        <h2>All Listings</h2>
+    {% endif %}
+    <br>
+
+    <!-- Category Dropdown -->
+    <div class="dropdown">
+        <a id="category_button" class="btn btn-primary dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            Categories
+        </a>
+        
+        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuLink">
+            {% for category in categories %}
+                <li><a class="dropdown-item" href="{% url 'category' category %}">{{ category }}</a></li>
+            {% endfor %}
+        </ul>
+    </div><br>
+    
+    <div class="container">
+        <div class="row gx-lg-1 gy-lg-3 gx-md-5 gy-md-3">
+            {% for listing in listings %}
+                <div class="col-sm-12 col-md-6 col-lg-4">
+                <button style="margin:auto;display: block;" type="button" class="btn btn-sm btn-primary" disabled>{{ listing.category }}</button>           
+                        <div class="card">
+                            <a href="{% url 'listing' listing.id %}">
+                                <img src="{{ listing.img_url }}" class="card-img-top" alt="...">
+                            </a> 
+                            <div class="card-body">
+                                <a style="text-decoration:none;" href="{% url 'listing' listing.id %}">
+                                    <h4 style="text-align: center;color:#4AD7D1" class="card-text">
+                                        {{ listing.title }}
+                                    </h4>
+                                </a><br>
+                                {% if request.user.username == listing.username %}
+                                    <p style="float:left;color:#818181" class="card-text"><small>Listed by~<i>You</i></small></p>
+                                {% else %}
+                                    <p style="float:left;color:#818181" class="card-text"><small>Listed by~{{ listing.username }}</small></p>
+                                {% endif %}
+                                {% if listing.status == "active"%}
+                                    <p style="float:right" class="btn-sm btn-success">Active</p>
+                                {% else %}
+                                    <p style="float:right" class="btn-sm btn-warning">Closed</p>
+                                {% endif %}
+
+                                <p style="clear:both;color:white" class="card-text">
+                                    Starting Bid: ${{ listing.starting_bid }}<br>
+                                    Highest Bid: ${{ listing.bid.first.bid }}</p>
+                                <div class="description">
+                                    <p class="card-text"><i>{{ listing.description }}</i></p>
+                                </div><br>
+                                {% if user.is_authenticated %}
+                                    {% if request.user.username != listing.username %}
+                                        <form action="{% url 'watchlist_manipulation' listing.id %}" method="post">
+                                            {% csrf_token %}
+                                                <input style="display:none;" type="text" value="index" name="origin">
+                                            {% if listing not in item_list %}
+                                                <input style="display:none;" type="text" value="add" name="condition">
+                                                <input type="submit" class="btn btn-success" value="Add to Watchlist">
+                                            {% elif listing in item_list %}
+                                                <input style="display:none;" type="text" value="remove" name="condition">
+                                                <input type="submit" class="btn btn-danger" value="Remove from Watchlist">
+                                            {% endif %}
+                                        </form>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>                    
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+
+
+

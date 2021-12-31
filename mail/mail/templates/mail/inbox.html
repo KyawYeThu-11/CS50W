@@ -1,0 +1,59 @@
+{% extends "mail/layout.html" %}
+{% load static %}
+<!-- D:\KYT\Education\CS50_Web\mail\mail\static\mail -->
+{% block body %}
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <img width="53" src="{% static 'mail/gmail.png' %}" alt="Gmail logo">  
+      <h3 id="title">&nbsp; Mail</h3>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+      </div>
+      <div class="d-flex">
+        <h5 id="username">{{ request.user.email }}</h5>
+        <a href="{% url 'logout' %}"><button class="btn btn-light" id="logout_button" type="submit">Log Out</button></a>
+      </div>
+    </div>
+</nav>
+<div class="container">
+    <div class='nav-div'>
+        <button class='nav-button' id="inbox"><img width="30" src="{% static 'mail/inbox.png' %}" alt="Inbox logo"> &nbsp;&nbsp;Inbox</button>
+        <button class='nav-button' id="sent"><img width="30" src="{% static 'mail/sent.png' %}" alt="Sent logo"> &nbsp;&nbsp;Sent</button>
+        <button class='nav-button' id="archived"><img width="30" src="{% static 'mail/archive.png' %}" alt="Archive logo"> &nbsp;&nbsp;Archive</button>
+        <button class='nav-button' id="compose"><img width="30" src="{% static 'mail/compose.png' %}" alt="Compose logo"> &nbsp;&nbsp;Compose</button>
+    </div>
+       <hr>
+
+    <div id="email">
+        <div class="card">
+            <div class="card-header"></div>
+            <div class="card-body">
+              <p class="card-text"></p>
+            </div>
+          </div>
+    </div>
+
+    <div id="emails-view">
+    </div>
+
+    <div id="compose-view">
+        <h5 id='form_top_border'>New Email</h5>
+        <form id="compose-form">
+            <div class="form-group">
+                <input disabled class="form-control" value="Sender: {{ request.user.email }}" placeholder="Sender">
+            </div>
+            <div class="form-group">
+                <input id="compose-recipients" class="form-control" placeholder="Recipients" required>
+            </div>
+            <div class="form-group">
+                <input class="form-control" id="compose-subject" placeholder="Subject">
+            </div>
+            <textarea id="compose-body" style='height:50px;' required></textarea>
+            <input type="submit" class="btn btn-primary" value="Send"/>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'mail/inbox.js' %}"></script>
+{% endblock %}

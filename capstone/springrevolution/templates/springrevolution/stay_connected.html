@@ -1,0 +1,134 @@
+{% load static %}
+<br><br><br class="avoid_navbar"><br class="avoid_navbar">
+<div class="container-md">
+
+    <!-- Intro to the feature -->
+    <div class="card text-center">
+        <div class="card-header">
+          <img width="40" src="{% static 'springrevolution/images/three-fingers.png' %}" alt="three fingers salute">
+        </div>
+        <div class="card-body">
+          <h4 class="card-title">Stay Connected</h4>
+          <img id="donation_img" width="160" class="img-fluid" src="{% static 'springrevolution/images/helping-hand.png' %}" alt="Donations"><br><br>
+          <p class="card-text">
+              How long the revolution will last is opaque to everyone, and it's such an agony for the people of Myanmar to
+              witness or be subjected to junta's brutalities every single day. Therefore, this feature of sending motivational
+              and heartwarming emails to one another will (hopefully!) offer people mental strength, encourage them not to give up,
+              and keep them feel connected.
+          </p>
+        </div>
+    </div><br>
+
+    <!-- Subscribe Mailing Service -->
+    <div class="subscribe_service">
+        <div class="text-center">
+            <h4 style="font-family:Trirong;" class="card-title">Subscribe Mailing Service</h4><br>
+            <p class="card-text">
+                By subscribing the service, users will receive an email in their Gmail inbox once in a specific time interval they have set. As a sample, an email will be sent as soon as
+                users have subscribed so that they can decide their subscription status. Most messages in our emails are written by other fellow users, and because the message for each email is chosen randomly
+                from the database, it is possible that users receive the same email they've got in earlier days. Nevertheless, the more messages left by users, the more this potential inconvenience can be mitigated. 
+            </p>
+            <img id="donation_img" width="160" class="img-fluid" src="{% static 'springrevolution/images/subscribe.png' %}" alt="Mail"><br><br>
+            {% if request.user.subscribe is True %}
+                {% if request.user.time_interval == 1 %}
+                <p>You are receiving our messages once a day.</p>
+                {% else %}
+                <p>You are receiving our message once in {{request.user.time_interval}} days.</p>
+                {% endif %}            
+            {% endif %}    
+        </div>
+    
+        {% if not user.is_authenticated or request.user.subscribe is False %}
+        <h5 class="text-center">How often do you want to receive our message?</h5>
+        <form action="{% url 'subscribe' %}" method="post">
+            {% csrf_token %}
+            <div id='interval-field' class="input-group mb-3">
+                <label class="input-group-text" for="interval">Once in</label>
+                {% if user.is_authenticated %}
+                <select class="form-select" name="interval">
+                {% else %}
+                <select class="form-select" name="interval" disabled>
+                {% endif %}                
+                  <option value="1" selected>One Day</option>
+                  <option value="2">Two Days</option>
+                  <option value="3">Three Days</option>
+                  <option value="4">Four Days</option>
+                  <option value="5">Five Days</option>
+                  <option value="6">Six Days</option>
+                  <option value="7">Seven Days</option>
+                </select>
+            </div>
+            <div class="text-center">
+                {% if user.is_authenticated %}
+                <button type="submit" class="btn btn-primary">Subscribe</button>
+                {% else %}
+                <button class="diabled_button btn btn-secondary" data-toggle="tooltip" data-bs-placement="bottom" title="Login is required">Subscribe</button>
+                {% endif %}
+            </div>
+        </form>
+        {% else %}
+        <div class="text-center">
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#show_form" aria-expanded="false" aria-controls="collapseExample">
+                Click to Change Your Subscription &#8628;
+            </button>
+            <a href="{% url 'unsubscribe' %}" class="btn btn-danger">Unsubscribe</a>
+        </div><br>
+        {% endif %}
+        <div class="collapse" id="show_form">
+            <div class="change_subscription_card card card-body">
+                <h5 class="text-center">How often do you want to receive our message?</h5>
+                <form action="{% url 'subscribe' %}" method="post">
+                    {% csrf_token %}
+                    <div id='interval-field' class="input-group mb-3">
+                        <label class="input-group-text" for="interval">Once in</label>
+                        <select class="form-select" name="interval">
+                          <option value="1" selected>One Day</option>
+                          <option value="2">Two Days</option>
+                          <option value="3">Three Days</option>
+                          <option value="4">Four Days</option>
+                          <option value="5">Five Days</option>
+                          <option value="6">Six Days</option>
+                          <option value="7">Seven Days</option>
+                        </select>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="interval-form btn btn-primary">Change</button>
+                    </div>
+                </form>      
+            </div>
+        </div>
+    </div><br>
+    <hr>
+    <!-- leave Message -->
+    <div class="leave_message">
+        <div class="text-center">
+            <h4 style="font-family:Trirong;" class="card-title">Leave Message</h4>
+            <p> Hey, leaving a short, encouraging message to our fellow comerades doesn't take much long. Just your words can make others' day.</p>
+            <form action="{% url 'leave_message' %}" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-4 col-12">
+                        <img id="donation_img" width="160" class="img-fluid" src="{% static 'springrevolution/images/support.png' %}" alt="leave message"><br><br>
+                        {% if user.is_authenticated %}
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        {% else %}
+                        <button class="diabled_button btn btn-secondary" data-toggle="tooltip" data-bs-placement="bottom" title="Login is required">Submit</button>
+                        {% endif %}
+                    </div>
+                    <div class="col-sm-7 col-12">
+                        {% if user.is_authenticated %}
+                        <textarea name="message" class="form-control" rows="10" placeholder="Leave a message here..." required></textarea>
+                        {% else %}
+                        <textarea name="message" class="form-control" rows="10" placeholder="Leave a message here..." disabled></textarea>
+                        {% endif %}
+                        <label for="message" class="form-text">Note that your nickname will be exposed alongside your message.</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+            
+            
+
+    </div>
+</div>
+<br>

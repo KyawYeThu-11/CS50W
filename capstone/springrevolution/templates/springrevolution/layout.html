@@ -1,0 +1,286 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>
+            {% block title%}
+            {% endblock %}            
+        </title>
+        <!-- It is necessary also for using sm and md of grid system of bootstrap -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- For title logo -->
+        <link rel="icon" href="{% static 'springrevolution/images/hand.png' %}">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+        <link href="{% static 'springrevolution/styles.css' %}" rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Trirong|PT+Sans|Cinzel Decorative' rel='stylesheet'>
+        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+        <script src="{% static 'springrevolution/index.js' %}"></script>
+
+        <!-- For using JQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        
+    </head>
+    <body>
+        {% block body%}
+        {% endblock %}
+        
+        <!-- Toast -->
+        {% if email_status %}
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
+          {% if email_status == "2" or email_status == "3" or email_status == "4" or email_status == "5" or email_status == "7" %}
+          <div id="liveToast" class="toast hide text-white bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+          {% elif email_status == "1" or email_status == "6" %}
+          <div id="liveToast" class="toast hide text-white bg-secondary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+          {% endif %}
+          <div class="toast-header">
+              <img width="30" src="{% static 'springrevolution/images/three-fingers.png' %}" class="rounded me-2" alt="three fingers salute">
+              <strong class="me-auto">Email Status</strong>
+              <small>Just Now</small>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+              {% if email_status == "2" %}
+              Your form has been successfully submitted.<br>
+              The link will be added to this website as soon as it's been approved.<br>
+              Thanks for your collaboration.
+              
+              {% elif email_status == "3" %}
+              Your message has been successfully sent.<br>
+              We will take your message into serious consideration.<br>
+              Thanks for contacting us.
+              
+              {% elif email_status == "1" %}
+              The link submitted is already in this website.<br>
+              Thanks for your collaboration.
+              
+              {% elif email_status == "4" %}
+              You have just subscribed our mailing service.<br>
+              Henceforth, our message will be sent to your email address once in a specific time interval you've set.<br>
+              Thanks for your subscription.
+              
+              {% elif email_status == "6" %}
+              You have just unsubscribed our mailing service.<br>
+              Should you have any inconvenience with our service, please kindly report us from <a class="tabs" role="button" data-page="contact_us">Here</a>.
+              
+              {% elif email_status == "5" %}
+              You have just set a new time interval in your subscription.<br>
+              Thank you.
+
+              {% elif email_status == "7" %}
+              Your message has been successfully submitted.<br>
+              It will be added to this website as soon as it's been approved.<br>
+              Thanks for your message.
+
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        </div>
+        {% endif %}
+
+        <!-- FAQ -->
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="FAQ" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasExampleLabel">FAQ</h5>
+              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                          Is my login credentials secure?
+                        </button>
+                      </h2>
+                      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          Users’ passwords, are stored as hashed characters (random characters) in the database using hash function
+                          which is <strong>one way</strong> (i.e. Even we cannot see the password users have typed because your passwords, hashed characters, cannot be converted into
+                          plain text again).
+                          <br><br>
+                          While we work to protect the confidentiality of users' indentity related information, email addresses in specific, we cannot guarantee that unauthorized third parties will not be able to defeat our security
+                          measures.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          Why the contribution of users is important?
+                        </button>
+                      </h2>
+                      <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          Data of this website, specifically <strong>links of donations</strong> and <strong>messages</strong>, is compiled with the help of users. Thus, users’ contribution to the website is highly appreciated, and
+                          it can be done via the forms under their respective tabs. It’s worth noting that the data submitted via the forms in question will be sent to us first, from which whether
+                          or not the submitted data should be approved will be decided. This process of sanitising the incoming data means that the submitted data will not be directly added to the website.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                          Which factors are considered when deciding whether submitted links or messages should be approved or not? 
+                        </button>
+                      </h2>
+                      <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          <strong>...</strong>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+
+        <!-- Models -->
+        <div class="modal fade" id="about_us" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">About Us</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="modal fade" id="about_donation_links" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <img id="donation_img" width="40" class="img-fluid" src="{% static 'springrevolution/images/online-donation.png' %}" alt="Donations">
+                <h5 class="modal-title" id="staticBackdropLabel"> &nbsp; About Donation Links</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                Donation links are arranged by the following order which we presume is the most optimal for efficiency:<br>
+                <ol>
+                  <li>
+                    Sources (first priority)
+                    <ol type="i">
+                      <li>Website</li>
+                      <li>Other Social Platform</li>
+                    </ol>             
+                  </li>
+                  <li>
+                    Date (second priority)
+                    <ol type="i">
+                      <li>Null</li>
+                      <li>Latest</li>
+                      <li>Oldest</li>
+                    </ol>
+                  </li>
+                  <li>
+                    Name (third priority)<br>
+                    &nbsp;&nbsp;&nbsp;- alphabetical order
+                  </li>
+                </ol>
+      
+                <strong>ALERT</strong>: There are two things users should bear in mind about donation links.
+                <ol>
+                  <li>Though the submission for adding links is immediately denied if the link is already in the database, there is still the possibility of location duplications due to some cases where different URLs lead to the same location.</li>
+                  <li>Despite each and every link submitted being mindfully checked before being added into the database, it cannot be completely guaranteed that the charities or individuals led by the links are trustworthy or still accepting donations. Therefore, users should evaluate their trustworthiness only after visiting the links and learning about them. We will work to progressively mitigate this potential inconvenience as the website scales up.</li>
+                </ol>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="about_messaging_services" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">About Messaging Services</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  By subscribing the service, users will receive an email in their Gmail inbox once in a specific time interval they have set. As a sample, an email will be sent as soon as users have subscribed so that they can decide their subscription status. Most messages in our emails are written by other fellow users, and because the message for each email is chosen randomly from the database, it is possible that users receive the same email they've got in earlier days.
+                  Nevertheless, the more messages left by users, the more this potential inconvenience can be mitigated.
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="modal fade" id="securtiy_conditions" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Security & Privacy Conditions</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    We do prioritize the security of our users especially due to current situations in Myanmar. For each user, we store six information, in which user’s <strong>email address</strong> is the only identity 
+                    related information. Other information includes <strong>subscription related data, nickname, and password</strong>. Of course, all data of users will be kept highly confidential.
+                    <br><br>
+                    When it comes to users’ <strong>passwords</strong>, they will be stored as hashed characters (random characters) in the database using hash function
+                    which is <strong>one way</strong> (i.e. Even we cannot see the password users have typed because your passwords, hashed characters, cannot be converted into
+                    plain text again).
+                    <br><br>
+                    While we work to protect the security of users' indentity related information, we cannot guarantee that unauthorized third parties will not be able to defeat our security
+                    measures. Please notify us immediately of any compromise or unauthorized use of your account by reporting us from
+                    <a class="tabs" role="button" data-toggle="tooltip" data-bs-placement="right" title="Contact Us" data-page="contact_us">here</a>.
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="modal fade" id="acknowledgement" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Acknowledgement</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <h4>Icons</h4>
+                    <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+                  <h4>Images</h4>
+                  <ul>  
+                    <li><a href="https://internewscast.com/wp-content/uploads/2021/03/hundreds-of-youth-protesters-trapped-by-myanmar-forces-in-yangon-as-anti-coup-movement-grows-scaled.jpg">Hundreds of Youth Protesters Trapped by Myanmar Forces in Yangon as Anti-Coup Movement Grows Scaled</a> by <a href="https://internewscast.com/">internewscast</a></li>
+                    <li><a href="https://im-media.voltron.voanews.com/Drupal/01live-166/styles/sourced/s3/2021-02/ap_myanmar_protest4_07Feb21.jpg?itok=9-KmAc68">ap Myanmar Protest</a> by <a href="https://www.voanews.com/">voanews</a></li>                    
+                  </ul>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="modal fade" id="donations_hub" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <img id="donation_img" width="40" class="img-fluid" src="{% static 'springrevolution/images/online-donation.png' %}" alt="Donations">
+                  <h5 class="modal-title" id="staticBackdropLabel"> &nbsp; Donations Hub</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Resisting the dictatorship and supporting the victims of junta's oppressions require continuous financial support.
+                    This website, with <strong>categories</strong>, consolidates scatterd online sources of locations across Myanmar that are in need of our financial helps, which will
+                    (hopefully!) facilitate searching for appropriate locations to donate and encourage in contribution.
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="modal fade" id="stay_connected" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <img id="donation_img" width="40" class="img-fluid" src="{% static 'springrevolution/images/helping-hand.png' %}" alt="Donations">
+                <h5 class="modal-title" id="staticBackdropLabel"> &nbsp; Stay Connected</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                How long the revolution will last is opaque to everyone, and it's such an agony for the people of Myanmar to
+                witness or be subjected to junta's brutalities every single day. Therefore, this feature of sending motivational
+                and heartwarming emails to one another will (hopefully!) offer people mental strength, encourage them not to give up,
+                and keep them feel connected.
+              </div>
+            </div>
+          </div>
+        </div>
+
+    </body>
+</html>

@@ -1,0 +1,41 @@
+{% extends 'springrevolution/layout.html' %}
+{% load static %}
+
+{% block body %}
+<div class="container">
+    <div class="resetting-card card">
+        <div class="card-header text-center">
+            <img width="40" src="{% static 'springrevolution/images/three-fingers.png' %}" alt="three fingers salute">
+        </div>
+        <div class="card-body">
+            <h4 class="card-title text-center">Resetting Password</h4><br>
+            <form action="{% url 'reset_password' %}" method="post">
+                {% csrf_token %}
+                <div class="container-lg">
+                    <!-- Never uses spaces for hidden value! -->
+                    <input style="display:none;" class="form-control" type="email" name="email" value="{{email}}">
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" name="password" autocomplete="off" required>
+                        <label for="password">Password</label>
+                        {% if error1 %}
+                        <div class="form-text" style="color: red;">{{ error1 }}</div>
+                        {% else %}
+                        <div class="form-text">At least 8 characters and both uppercase & lowercase letters are required.</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" name="confirm_password" autocomplete="off" required>
+                        <label for="confirm_password">Confirm Password</label>
+                        {% if error2 %}
+                        <div class="form-text" style="color: red;">{{ error2 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Reset</button>
+                    </div>
+                </div>
+            </form>    
+        </div>
+    </div>
+</div>
+{% endblock %}

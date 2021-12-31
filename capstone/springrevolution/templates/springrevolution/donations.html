@@ -1,0 +1,147 @@
+{% load static %}
+<br><br><br class="avoid_navbar"><br class="avoid_navbar">
+<div class="container-md">
+  <!-- Intro to the feature -->
+    <div class="card text-center">
+      <div class="card-header">
+        <img width="40" src="{% static 'springrevolution/images/three-fingers.png' %}" alt="three fingers salute">
+      </div>
+      <div class="card-body">
+        <h4 class="card-title">Donations Hub</h4>
+        <img id="donation_img" width="160" class="img-fluid" src="{% static 'springrevolution/images/online-donation.png' %}" alt="Donations"><br><br>
+        <p class="card-text">
+            Resisting the dictatorship and supporting the victims of junta's oppressions require continuous financial support.
+            This website will, with categories, consolidate scatterd online sources of locations across Myanmar that are in need of our financial helps, and will
+            (hopefully!) facilitate searching for appropriate locations to donate and encourage in contribution.
+        </p>
+      </div>
+    </div><br>
+    
+    <!-- Sub-tabs of Donations -->
+    <p class="donations_tabs text-center card-title">
+      <a role="button" class="mini_tabs" data-content="categories_content">Donations Hub </a>
+      <a role="button" class="mini_tabs" data-content="add_link_form">Add Donation Link</a>
+    </p><br>
+
+    <!-- Donations Hub -->
+    <div id="categories_content" class="contents categories text-center">
+      <p class="card-text">
+        <strong></strong>
+        Links for donations are currently categorised into six groups, <strong>Civil Disobedience Movement, CRPH, Ethnic Minoritites & Refugees, Revolution Victims & Heroes, Agents,</strong> and <strong>Others</strong>.Users are highly
+        encouraged to offer us suggestions about categories, and send to us more links for donations via the forms under <strong>Contact Us</strong> tab and <strong>Add Donation Link</strong> sub-tab respectively.
+      </p>
+      <h4 style="font-family: Trirong;" class="card-title">Categories</h4>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+            <div data-buttonid="button1" class="category col">
+                <div class="card bg-dark text-white">
+                  <img class="category_img" src="https://im-media.voltron.voanews.com/Drupal/01live-166/styles/892x501/s3/2021-02/ap_cdm.jpg?itok=Fiwa32yU" class="card-img-top" alt="CDM">
+                  <div class="card-img-overlay">
+                      <h3 class="card-title">Civil Disobedience Movement</h3>
+                      <button id="button1" class="btn btn-primary support-btn" data-buttonid="button1">Support</button>
+                  </div>
+                </div>
+            </div>
+            <div data-buttonid="button2" class="category col">
+                <div class="card bg-dark text-white">
+                  <img class="category_img" src="https://pbs.twimg.com/media/EuR_j0oWQAM7bWt.jpg" class="card-img-top" alt="CRPH">
+                  <div class="card-img-overlay">
+                      <h3 class="card-title">CRPH</h3>
+                      <button id="button2" class="btn btn-primary support-btn" data-buttonid="button2">Support</button>
+                  </div>
+                </div>
+            </div>
+            <div data-buttonid="button3" class="category col">
+                <div class="card bg-dark text-white">
+                  <img class="category_img" src="https://api.time.com/wp-content/uploads/2016/10/gettyimages-609875952.jpg?quality=85&w=1024&h=512&crop=1" class="card-img-top" alt="Refugees">
+                  <div class="card-img-overlay">
+                      <h3 class="card-title">Ethnic Minoritites & Refugees</h3>
+                      <button id="button3" class="btn btn-primary support-btn" data-buttonid="button3">Support</button>
+                  </div>
+                </div>
+            </div>
+            <div data-buttonid="button4" class="category col">
+                <div class="card bg-dark text-white">
+                  <img class="category_img" src="https://s.france24.com/media/display/53bdd556-7362-11eb-a7c1-005056a964fe/w:1280/p:16x9/Anti-coup%20protesters%20myanmar.webp" class="card-img-top" alt="Revolution Heroes">
+                  <div class="card-img-overlay">
+                      <h3 class="card-title">Revolution Victims & Heroes</h3>
+                      <button id="button4" class="btn btn-primary support-btn" data-buttonid="button4">Support</button>
+                  </div>
+                </div>
+            </div>
+            <div data-buttonid="button5" class="category col">
+              <div class="card bg-dark text-white">
+                <img class="category_img" src="https://www.citynews1130.com/wp-content/blogs.dir/sites/9/2021/02/XVT109-221_2021_033346.jpg" class="card-img-top" alt="Agents">
+                <div class="card-img-overlay">
+                    <h3 class="card-title">Agents</h3>
+                    <button id="button5" class="btn btn-primary support-btn" data-buttonid="button5">Support</button>
+                </div>
+              </div>
+            </div>
+            <div data-buttonid="button6" class="category col">
+              <div class="card bg-dark text-white">
+                <img class="category_img" src="https://static.frieze.com/files/styles/frieze_teaser/public/article/thumbnail/myanm-art-7.jpg?itok=LHfFJVE5" class="card-img-top" alt="Artists">
+                <div class="card-img-overlay">
+                    <h3 class="card-title">Others</h3>
+                    <button id="button6" class="btn btn-primary support-btn" data-buttonid="button6">Support</button>
+                </div>
+              </div>
+            </div>
+      </div>
+    </div>
+
+    <!-- Add Link Form -->
+    <div id="add_link_form" class="contents">
+      <p class="card-text">
+        Users’ suggestion of links for donations is genuinely appreciated as it’s our primary way to compile the information. The submitted form will be sent to us,
+        from which whether or not the submitted URL should be approved will be decided. Only after the approval will the submitted data be added to the database.
+      </p>
+        <h4 style="font-family: Trirong;" class="card-title text-center">Form</h4><br>
+        <form action="{% url 'add_link' %}" method="post">
+          {% csrf_token %}
+          <div class="row mb-3">
+            <label for="name" class="col-sm-2 col-form-label">Name (optional)</label>
+            <div class="col-sm-5">
+              <input type="text" autocomplete="off" class="form-control" name="name">
+              <div class="form-text">Name is that of the website or page or account that URL leads to.</div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="url" class="col-sm-2 col-form-label">URL</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="url" required>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="description" class="col-sm-2 col-form-label">Short Description (Optional)</label>
+            <div class="col-sm-10">
+              <textarea type="text" class="form-control" name="description" rows="4"></textarea>
+              <div class="form-text">This field is just for users to have a grasp of what kind of donation location it is. This field is not ideal for detailed information.</div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="category" class="col-sm-2 col-form-label">Category</label>
+            <div class="col-sm-5">
+              <select name="category" class="form-select" aria-label="Default select example" required>
+                <option value="CDM">Civil Disobedience Movement</option>
+                <option value="CRPH">CRPH</option>
+                <option value="Refugees">Ethnic Minoritites & Refugees</option>
+                <option value="Revolutionaries">Revolution Victims & Heroes</option>
+                <option value="Agents">Agents</option>
+                <option value="Others">Others</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="date" class="col-sm-2 col-form-label">Date (Optional)</label>
+            <div class="col-sm-5">
+              <input type="date" autocomplete="off" class="form-control" name="date">
+              <div class="form-text">*This field is required only when the link leads to a post instead of a page or an account.</div>
+            </div>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+    </div>
+</div>
+<br>

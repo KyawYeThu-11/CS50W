@@ -1,0 +1,19 @@
+{% extends "springrevolution/layout.html" %}
+{% load static %}
+{% block body %}
+    <div class="email_sent">
+      {% if reset_password is True %}
+      <h2>Please check the email at {{ email }} to reset your password.</h2>
+      {% else %}
+      <h2>Thank You for Signing Up!</h2>
+      <h2>Please check the confirmation email at {{ email }} to confirm your registration.</h2>
+      {% endif %}
+        <p>Note: Should you not receive the email in few minutes,</p>
+        <ul>
+            <li>Check spam folder</li>
+            <li>Verify if you typed your email correctly</li>
+            <li>If you can't resolve the issue, please report us via the form under Contact Us tab.
+        </ul>
+        <a href="{% url 'index' %}">Back to home page</a>        
+    </div>
+{% endblock %}

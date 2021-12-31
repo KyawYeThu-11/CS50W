@@ -1,0 +1,168 @@
+{% extends "network/layout.html" %}
+{% load network_extras %}
+{% load static %}
+
+{% block page %}
+    {% if page == "Profile" %}
+        {% if request.user.username == user.username %}
+            Profile
+        {% else %}
+            {{user.username}}
+        {% endif %}
+    {% else %}
+        {{page}}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <!-- Bar showing username & page name -->
+    {% if request.user.is_authenticated %}
+    <div class="row status-card">
+                <div class="col-6">
+                    <h3>
+                        <a class="black_link" href="{% url 'profile' request.user.username %}">
+                            <img width="40" src="{% static 'network/images/user_account.png' %}" alt="Profile Picture">
+                            &nbsp; {{request.user.username}}
+                        </a>
+                    </h3>
+                </div>
+                <div class="col-6">
+                    <h3 style="float:right;">
+                        {% if page == "Profile" %}
+                            {% if request.user.username == user.username %}
+                            Profile
+                            {% else %}
+                            {{user.username}}
+                            {% endif %}
+                        {% else %}
+                            {{page}}
+                        {% endif %}
+                    </h3>
+                </div>
+    </div><br>
+    {% endif %}
+
+    <!-- Profile card -->
+    {% if page == "Profile" %}
+    <div class="card">
+        <div class="card-body">
+            <div class="text-center">
+                <img width="150" src="{% static 'network/images/user_account.png' %}" alt="Profile Picture"><br>
+                <h2>{{user.username}}</h2>
+                {% if request.user.username != user.username %}
+                    <form action="{% url 'follow' %}" method="post">
+                        {% csrf_token %}
+                        <input style="display:none" name="followee" value="{{user.username}}">
+                        {% if not request.user.is_authenticated %}
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#follow_modal">Follow</button>
+                        {% elif request.user in user.user_profile.get.followers.all %}
+                        <input style="display:none" name="action" value="unfollow">
+                        <button id="following_button" type="submit" class="btn btn-primary">Following</button>
+                        {% else %}
+                        <input style="display:none" name="action" value="follow">
+                        <button id="follow_button" type="submit" class="btn btn-primary">Follow</button>
+                        {% endif %}
+                    </form>
+                {% endif %}
+                <strong id="follower_count">{{user.user_profile.get.followers.count}} </strong><span class="text-muted">{% if user.user_profile.get.followers.count > 1 %}followers{% else %}follower{% endif %}</span>&nbsp;
+                <strong>{{user.following.count}} </strong><span class="text-muted">following</span>                
+            </div>
+        </div>
+    </div> 
+    {% endif %}
+
+    <!-- All posts -->
+    <div>
+        <!-- A post -->
+        {% for post in page_obj %}
+        <div class="card">
+            <div class="card-body">
+                <a class="black_link" href="{% url 'profile' post.post_owner.username %}"><img width="40" src="{% static 'network/images/user_account.png' %}" alt="Profile Picture">&nbsp; {{post.post_owner.username}}</a>
+                {% if 'week' in post.timestamp|timesince|upto:',' %}
+                <span class="text-muted">{{post.timestamp}}</span>
+                {% else %}
+                <span class="text-muted">{{post.timestamp|timesince|upto:','}}</span>
+                {% endif %}
+                <!-- post menu -->
+                {% if request.user.is_authenticated %}
+                <div style="float:right;" class="btn-group dropstart">
+                    <img width="36" src="{% static 'network/images/more.png' %}" alt="three dots" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <ul class="dropdown-menu">
+                        {% if post.post_owner.username == request.user.username %}
+                        <li><a class="edit_post dropdown-item" data-post="{{post.id}}"><img width="28" src="{% static 'network/images/edit.png' %}" alt="Edit">&nbsp; Edit</a></li>
+                        {% endif %}
+                        {% if not request.user in post.saved_by.all %}
+                        <li><a class="save_post dropdown-item" data-post="{{post.id}}" data-action="save"><img width="28" src="{% static 'network/images/save.png' %}" alt="Save">&nbsp; <span id="save_status{{post.id}}">Save</span></a></li>
+                        {% else %}
+                            {% if page == 'Saved Posts' %}
+                                <li><a class="save_post dropdown-item" data-post="{{post.id}}" data-action="unsave" data-reload='True'><img width="28" src="{% static 'network/images/save.png' %}" alt="Save">&nbsp; <span id="save_status{{post.id}}">Unsave</span></a></li>
+                            {% else %}
+                                <li><a class="save_post dropdown-item" data-post="{{post.id}}" data-action="unsave" data-reload='False'><img width="28" src="{% static 'network/images/save.png' %}" alt="Save">&nbsp; <span id="save_status{{post.id}}">Unsave</span></a></li>
+                            {% endif %}
+                        {% endif %}
+                    </ul>
+                </div>
+                {% endif %}      
+                <br><br>
+                <!-- post content & its reactions -->
+                <div id="post{{post.id}}">
+                    <p>{{post.message | safe}}</p>
+                    <div>
+                        <div style='float:left;'>
+                            {% if not request.user.is_authenticated %}
+                            <img style="display:block" width="28" src="{% static 'network/images/empty-heart.png' %}" data-bs-toggle="modal" data-bs-target="#love_modal" alt="Empty Heart"></img>
+                            {% else %}
+                            {% if not request.user in post.liked_by.all %}
+                            <img style="display:block" width="28" src="{% static 'network/images/empty-heart.png' %}" class="heart_icon" id="empty_heart{{post.id}}" data-post="{{post.id}}" data-action="love" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Love" alt="Empty Heart"></img>
+                            <img style="display:none" width="28" src="{% static 'network/images/heart.png' %}" class="heart_icon" id="heart{{post.id}}" data-post="{{post.id}}" data-action="unlove" data-bs-toggle="tooltip" data-bs-placement="bottom" title="unlove" alt="Heart"></img>
+                            {% else %}
+                            <img style="display:none" width="28" src="{% static 'network/images/empty-heart.png' %}" class="heart_icon" id="empty_heart{{post.id}}" data-post="{{post.id}}" data-action="love" data-bs-toggle="tooltip" data-bs-placement="bottom" title="love" alt="Empty Heart"></img>
+                            <img style="display:block" width="28" src="{% static 'network/images/heart.png' %}" class="heart_icon" id="heart{{post.id}}" data-post="{{post.id}}" data-action="unlove" data-bs-toggle="tooltip" data-bs-placement="bottom" title="unlove" alt="Heart"></img>
+                            {% endif %}
+                            {% endif %}                          
+                        </div>
+                        <div style="float:left">
+                            <span>&nbsp;</span>
+                            {% if post.love == 0 %}
+                            <span id='love_count{{post.id}}' style="visibility:hidden;"> {{post.love}}</span>               
+                            {% elif post.love > 0 %}
+                            <span id='love_count{{post.id}}'>{{post.love}}</span>              
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div id="edit_form{{post.id}}" style="display:none;">
+                    <textarea name="post_content" class="form-control" style="height:50px;"></textarea><br>
+                    <button class="back btn btn-secondary">Back</button>
+                    <button class="save btn btn-primary">Save</button> 
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted text-center">There is no post yet!</p>
+        {% endfor %}
+
+        <!-- Pagination -->
+        {% if posts_count > 10 %}
+        <br>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">first</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number}}"><span aria-hidden="true">&laquo;</span></a></li>
+                {% endif %}
+                <li class="page-item"><a class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
+                {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}"><span aria-hidden="true">&raquo;</span></a></li>
+                <li class="page-item"><a class="page-link" href="?page={{page_obj.paginator.num_pages}}">last</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+
+        <!-- To avoid pagination overflowed -->
+        {% if not user.request.is_authenticated %}
+        <br><br><br><br>
+        {% endif %}
+    </div>
+{% endblock %}
